@@ -5,20 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Noticia;
 use App\Http\Requests\StoreNoticiaRequest;
 use App\Http\Requests\UpdateNoticiaRequest;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\View\View;
 
 class NoticiaController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return JsonResponse
+     * @return View
      */
-    public function index(): JsonResponse
+    public function index(): View
     {
         $noticias = Noticia::orderByDesc('created_at')->limit(10)->get();
-        return response()->json($noticias);
-
+        return view('noticia', compact('noticias'));
     }
 
     /**
