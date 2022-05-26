@@ -6,6 +6,7 @@ use App\Models\Noticia;
 use App\Http\Requests\StoreNoticiaRequest;
 use App\Http\Requests\UpdateNoticiaRequest;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Cache;
 
 class NoticiaController extends Controller
 {
@@ -16,7 +17,10 @@ class NoticiaController extends Controller
      */
     public function index(): View
     {
-        $noticias = Noticia::orderByDesc('created_at')->limit(10)->get();
+        $noticias = Cache::remember('dez_primeiras_noticias', 15, function () {
+            return Noticia::orderByDesc('created_at')->limit(10)->get();
+        });
+
         return view('noticia', compact('noticias'));
     }
 
@@ -40,7 +44,6 @@ class NoticiaController extends Controller
 
     /**
      * Display the specified resource.
-
      * @param Noticia $noticia
      */
     public function show(Noticia $noticia)
@@ -51,7 +54,7 @@ class NoticiaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Noticia  $noticia
+     * @param Noticia $noticia
      */
     public function edit(Noticia $noticia)
     {
@@ -62,7 +65,7 @@ class NoticiaController extends Controller
      * Update the specified resource in storage.
      *
      * @param UpdateNoticiaRequest $request
-     * @param  Noticia $noticia
+     * @param Noticia $noticia
      */
     public function update(UpdateNoticiaRequest $request, Noticia $noticia)
     {
@@ -72,7 +75,7 @@ class NoticiaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Noticia $noticia
+     * @param Noticia $noticia
      */
     public function destroy(Noticia $noticia)
     {
