@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * @method static orderByDesc(string $string)
+ */
+class Noticia extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'titulo',
+        'noticia'
+    ];
+}
